@@ -1,6 +1,24 @@
 const key='65c244c40e022e15c618220a60743dce';        //my api key
 const callButton = document.getElementById('locationinput');
 //console.log(callButton);
+const weatherMap = new Map();
+
+weatherMap.set("Thunderstorm",'./images/thunderstorm.jpg');
+weatherMap.set("Drizzle", './images/drizzle.jpg');
+weatherMap.set("Rain", './images/rain.jpg');
+weatherMap.set("Snow", './images/snow.jpg');
+weatherMap.set("Mist", './images/mist.jpg');
+weatherMap.set("Smoke", './images/smoke.jpg');
+weatherMap.set("Haze", './images/haze.jpg');
+weatherMap.set("Dust", './images/dust.jpg');
+weatherMap.set("Fog", './images/fog.jpg');
+weatherMap.set("Sand", './images/sand.jpg');
+weatherMap.set("Ash", './images/ash.jpg');
+weatherMap.set("Squall", './images/squall.jpg');
+weatherMap.set("Tornado", './images/tornado.jpg');
+weatherMap.set("Clear", './images/clear.jpg');
+weatherMap.set("Cloudy", './images/cloudy.jpg');
+
 if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       function(position) {
@@ -43,19 +61,12 @@ function scrapData(response){
 
 function scrapJson(data){
     const weather=data.weather;
-    let description='';
-    let i=0;
-    for(;i<weather.length-1;i++){
-        description+=weather[i].description+',';
-
-    }
-    
-    description+=weather[i].description;
     const obj={
-        'description':description,
+        'description':weather[0].main,
         'temperature':data.main.temp,
         'humidity':data.main.humidity,
-        'wind':data.wind.speed
+        'wind':data.wind.speed,
+        'icon':data.weather[0].icon
    };
     
     return obj;
@@ -66,15 +77,20 @@ function showData(data){
     const temperature=data.temperature;
     const humidity=data.humidity;
     const wind=data.wind;
-   
+    const icon=data.icon;
 
     const temperatureInCelsius =parseInt (parseFloat(temperature) - 273.15)+'°'+'C';
     
+    if (weatherMap.has(weatherDescription)) {
+        document.body.style.backgroundImage=`url($weatherMap.get(${description})`;
+      }
+    
 
-    document.getElementById('temp').innerHTML=temperatureInCelsius;
-    document.getElementById('wind').innerHTML=wind+" km/h";
-    document.getElementById('humidity').innerHTML=humidity+"%";
-    document.getElementById('description').innerHTML=description;
+    document.getElementById('temp').textContent=temperatureInCelsius;
+    document.getElementById('wind').textContent=wind+" km/h";
+    document.getElementById('humidity').textContent=humidity+"%";
+    document.getElementById('description').textContent=description;
+    document.getElementById('icon').src=`https://openweathermap.org/img/w/${icon}.png`;
     console.log(description,temperatureInCelsius,humidity,wind);
 
 }
