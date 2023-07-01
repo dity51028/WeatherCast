@@ -18,7 +18,7 @@ weatherMap.set("Squall", './images/squall.jpg');
 weatherMap.set("Tornado", './images/tornado.jpg');
 weatherMap.set("Clear", './images/clear.jpg');
 weatherMap.set("Cloudy", './images/cloudy.jpg');
-
+/*
 if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       function(position) {
@@ -33,14 +33,29 @@ if (navigator.geolocation) {
     );
   } else {
     console.error("Geolocation is not supported by this browser.");
-  }
+  }*/
   
 if(callButton){
     callButton.addEventListener('submit',(event)=>{
         event.preventDefault();
         const cityName = document.getElementById('city').value;
+        const placeCityElement = document.getElementById('place_city');
+        placeCityElement.textContent = cityName;
         const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${key}`;
-        alert(`Searcing for city ${cityName}`);
+        //alert(`Searcing for city ${cityName}`);
+        const dateElement = document.querySelector('.date');
+        const timeElement = document.querySelector('.time');
+
+        const currentDate = new Date();
+
+          const options = { weekday: 'long', month: 'short', day: 'numeric' };
+          const formattedDate = currentDate.toLocaleDateString(undefined, options);
+
+          const formattedTime = currentDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+        dateElement.textContent = formattedDate;
+        timeElement.textContent = formattedTime;
+
         fetchData(url);
     });
 }
@@ -66,7 +81,8 @@ function scrapJson(data){
         'temperature':data.main.temp,
         'humidity':data.main.humidity,
         'wind':data.wind.speed,
-        'icon':data.weather[0].icon
+        'icon':data.weather[0].icon,
+       
    };
     
     return obj;
@@ -78,12 +94,11 @@ function showData(data){
     const humidity=data.humidity;
     const wind=data.wind;
     const icon=data.icon;
+    
+
 
     const temperatureInCelsius =parseInt (parseFloat(temperature) - 273.15)+'°'+'C';
-    
-    if (weatherMap.has(weatherDescription)) {
-        document.body.style.backgroundImage=`url($weatherMap.get(${description})`;
-      }
+   
     
 
     document.getElementById('temp').textContent=temperatureInCelsius;
@@ -91,7 +106,9 @@ function showData(data){
     document.getElementById('humidity').textContent=humidity+"%";
     document.getElementById('description').textContent=description;
     document.getElementById('icon').src=`https://openweathermap.org/img/w/${icon}.png`;
-    console.log(description,temperatureInCelsius,humidity,wind);
+   
+    
+    console.log(description,temperatureInCelsius,humidity,wind,);
 
 }
 function fetchData(url){
