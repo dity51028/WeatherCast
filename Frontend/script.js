@@ -18,22 +18,7 @@ weatherMap.set("Squall", './images/squall.jpg');
 weatherMap.set("Tornado", './images/tornado.jpg');
 weatherMap.set("Clear", './images/clear.jpg');
 weatherMap.set("Cloudy", './images/cloudy.jpg');
-/*
-if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-      function(position) {
-        const latitude = position.coords.latitude;
-        const longitude = position.coords.longitude;
-      const url=`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${key}`;
-      fetchData(url);
-      },
-      function(error) {
-        console.error("Error getting location:", error);
-      }
-    );
-  } else {
-    console.error("Geolocation is not supported by this browser.");
-  }*/
+
   
 if(callButton){
     callButton.addEventListener('submit',(event)=>{
@@ -82,8 +67,7 @@ function scrapJson(data){
         'humidity':data.main.humidity,
         'wind':data.wind.speed,
         'icon':data.weather[0].icon,
-       
-   };
+       };
     
     return obj;
 }
@@ -94,20 +78,16 @@ function showData(data){
     const humidity=data.humidity;
     const wind=data.wind;
     const icon=data.icon;
-    
-
-
     const temperatureInCelsius =parseInt (parseFloat(temperature) - 273.15)+'°'+'C';
    
-    
-
     document.getElementById('temp').textContent=temperatureInCelsius;
     document.getElementById('wind').textContent=wind+" km/h";
     document.getElementById('humidity').textContent=humidity+"%";
     document.getElementById('description').textContent=description;
+    document.getElementById('description2').textContent=description;
     document.getElementById('icon').src=`https://openweathermap.org/img/w/${icon}.png`;
    
-    
+   
     console.log(description,temperatureInCelsius,humidity,wind,);
 
 }
